@@ -1,7 +1,7 @@
 from models.board import Board
 from models.move import Move
 
-class MinMaxIAPlayer:
+class MinmaxPlayer:
     def __init__(self, color):
         self.color = color
 
