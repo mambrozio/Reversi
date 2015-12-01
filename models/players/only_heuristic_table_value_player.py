@@ -1,7 +1,7 @@
 from models.board import Board
 from models.move import Move
 
-class MinmaxPlayer:
+class HeuristcvaluePlayer:
     def __init__(self, color):
         self.color = color
 
@@ -12,8 +12,6 @@ class MinmaxPlayer:
 
         #see which move has the best value
         best_move = self.get_best_move(moves)
-
-        #fazer min max
 
         return best_move
 
