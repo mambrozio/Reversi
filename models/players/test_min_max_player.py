@@ -87,17 +87,3 @@ class MinmaxPlayer:
         col = move.y - 1
 
         return board_values[(8 * line) + col]
-
-
-    def get_best_move(self, moves):
-        best_move = None
-        best_move_value = -1000
-        for move in moves:
-            #check heuristic of that move
-            move_value = self.heuristic(move)
-
-            if best_move_value < move_value:
-                best_move = move
-                best_move_value = move_value
-
-        return best_move
