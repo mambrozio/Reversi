@@ -2,6 +2,9 @@ from models.board import Board
 from models.move import Move
 
 class MinmaxPlayer:
+
+    import random
+
     def __init__(self, color):
         self.color = color
 
@@ -24,7 +27,7 @@ class MinmaxPlayer:
                     multiplier = 1
                 if board.board[line][col] == board._opponent(self.color):
                     multiplier = -1
-                game_value = game_value + (multiplier*self.heuristic(temp_move))     
+                game_value = game_value + (multiplier*self.heuristic(temp_move))
         return game_value
 
     def max_move(self, board, player_color, depth, alpha, beta):
@@ -34,12 +37,13 @@ class MinmaxPlayer:
                 return 0
             multiplier = 2*(int(player_color > '@') - 0.5)
             return multiplier*g_over*1000000 #Numero muito grande
-            
+
         if depth >= 4:
             return self.board_value(board,player_color)
-            
+
         #i=0
         best_move_value = -1000000 #Numero muito pequeno
+        best_move = None
         for m in board.valid_moves(player_color):
             #fo = open("teste.txt", "a")
             #fo.write(str(depth) + " " + str(i) + " max move: " + str(m))
@@ -47,22 +51,52 @@ class MinmaxPlayer:
             #raw_input()
             new_board = board.get_clone()
             new_board.play(m, player_color)
+
+            # treta para ver se algum primeiro movimento acaba com o jogo. se sim, joga esse movimento.
+            if depth == 0:
+                new_board_score = new_board.score()
+                if self.color == Board.WHITE:
+                    if new_board_score[1] == 0:
+                        print "entrou na treta"
+                        best_move = m
+                        print "best move da treta: " + str(best_move)
+                        break
+                else:
+                    if new_board_score[0] == 0:
+                        print "entrou na treta"
+                        best_move = m
+                        print "best move da treta: " + str(best_move)
+                        break
+
             #fo.write(str(new_board))
             #fo.close()
             value = self.min_move(new_board, board._opponent(self.color), depth + 1,alpha,beta)
+            print "depth: " + str(depth) + " | " + "value: " + str(value) + " | best_move_value: " + str(best_move_value) + " | move: " + str(m)
             if value > best_move_value:
                 best_move_value = value
+                print "entrei no value > best_move_value"
                 if (depth == 0):
                     best_move = m;
+                    print "meu novo best_move eh: " + str(best_move)
             if value >= beta:
                 return value
             if value > alpha:
                 alpha = value
-                
+
         if depth == 0:
             print "Best move:"
             print best_move_value
+
+            # treta pra nao dar erro quando rodar. Eh uma protecao para caso best_move nunca seja setado
+            # TODO tentar descobrir o motivo do erro.
+            # XXX comentar as duas tretas e rodar como branco contra o terceiros_player
+            if best_move is None:
+                move_ = self.random.choice(board.valid_moves(self.color))
+                print "best_move is none, returning move: " + str(move_)
+                return move_
+
             return best_move
+
         return best_move_value
 
     def min_move(self, board, player_color, depth, alpha, beta):
@@ -72,7 +106,7 @@ class MinmaxPlayer:
                 return 0
             multiplier = 2*(int(player_color > '@') - 0.5)
             return multiplier*g_over*1000000 #Numero muito grande
-            
+
         if depth >= 4:
             return self.board_value(board,self.color)
 
@@ -96,7 +130,7 @@ class MinmaxPlayer:
         return best_move_value
 
     def minmax(self, board, player_color, depth):
-        return self.max_move(board, self.color, 0, -1000000, 10000000)
+        return self.max_move(board, self.color, 0, -1000000, 1000000)
 
 
     def heuristic(self, move):
@@ -121,7 +155,7 @@ class MinmaxPlayer:
         #Retorna 1 se o branco ganhar e -1 se o preto ganhar.
         #0 se nao tiver gameover.
         #2 se for empate
-        
+
         #Nao ha movimentos validos
         score = board.score()
         if (not board.valid_moves(self.color)) and (not board.valid_moves(board._opponent(self.color))):
