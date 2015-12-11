@@ -1,10 +1,9 @@
-"""@package players
-Documentation for the minmax with alpha-beta pruning.
-"""
-
 from models.board import Board
 from models.move import Move
 
+"""@package players
+Documentation for the minmax with alpha-beta pruning.
+"""
 
 class MinmaxPlayer:
     """Documentation for the minmax with alpha-beta pruning AI player.
@@ -16,17 +15,15 @@ class MinmaxPlayer:
     import random
 
     def __init__(self, color):
-        """The constructor."""
-
+        """Constructor."""
         self.color = color
 
     def play(self, board):
         """This is the function called by the board controller. Returns a Move."""
-
         print "Minmax Player with alpha-beta pruning"
 
         best_move = self.minmax(board, self.color, 0)
-        #print "best_move: " + str(best_move)
+        #print "best_move (play): " + str(best_move)
 
         return best_move
 
@@ -54,7 +51,6 @@ class MinmaxPlayer:
         During the recursive part, the return value (integer) of this function is the current best value.
         If depth is 0, meaning the end of the recursive part, it returns the best move (Move object)
         """
-
         # Checking if game is over and returning -1000000 for a loss, 1000000 for a win and 0 for a tie.
         g_over = self.gameover(board)
         if g_over:
@@ -95,15 +91,12 @@ class MinmaxPlayer:
 
             # Calls the min part of the algorithm.
             value = self.min_move(new_board, board._opponent(self.color), depth + 1, alpha, beta)
-            print "depth: " + str(depth) + " | " + "value: " + str(value) + " | best_move_value: " + str(best_move_value) + " | move: " + str(m)
 
             # This updates the alpha value and the best move if the depth is 0
             if value > best_move_value:
                 best_move_value = value
-                print "entrei no value > best_move_value"
                 if (depth == 0):
                     best_move = m;
-                    print "meu novo best_move eh: " + str(best_move)
 
             if value >= beta: # pruning
                 return value
@@ -113,18 +106,15 @@ class MinmaxPlayer:
 
         # Base of recursion. Returns the best move (Move object)
         if depth == 0:
-            print "Best move:"
-            print best_move_value
 
             # treta pra nao dar erro quando rodar. Eh uma protecao para caso best_move nunca seja setado
             # TODO tentar descobrir o motivo do erro.
             # XXX comentar as duas tretas e rodar como branco contra o terceiros_player
             # if there's no best move, randomly choose one of the valid moves available
-            if best_move is None:
-                move_ = self.random.choice(board.valid_moves(self.color))
-                print "best_move is none, returning move: " + str(move_)
-                return move_
-
+            # if best_move is None:
+            #     print "retornando random"
+            #     move_ = self.random.choice(board.valid_moves(self.color))
+            #     return move_
             return best_move # returns the best move to minmax()
 
         # Return value of the recursive part of this algorithm.
@@ -137,7 +127,6 @@ class MinmaxPlayer:
         Return value (integer) of this function is the current best value (beta).
         Very similar with the max function.
         """
-
         # Checking if game is over and returning -1000000 for a loss, 1000000 for a win and 0 for a tie.
         g_over = self.gameover(board)
         if g_over:
@@ -147,7 +136,7 @@ class MinmaxPlayer:
             return multiplier * g_over * 1000000 # very large number
 
         # Reached maximum depth for recursion
-        if depth >= 4:
+        if depth > 4:
             return self.board_value(board,self.color)
 
         best_move_value = 1000000 # very large number
@@ -173,7 +162,7 @@ class MinmaxPlayer:
 
     def minmax(self, board, player_color, depth):
         """Wrapper function to call max and get the best move."""
-        return self.max_move(board, self.color, 0, -1000000, 1000000)
+        return self.max_move(board, self.color, 0, -10000000, 10000000)
 
 
     def heuristic(self, move):
@@ -205,7 +194,6 @@ class MinmaxPlayer:
         """This function returns +1 if white player wins, -1 if black player wins,
         0 if game is not over and +2 if game is a tie
         """
-
         # No more valid moves
         score = board.score()
         if (not board.valid_moves(self.color)) and (not board.valid_moves(board._opponent(self.color))):
