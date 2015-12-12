@@ -11,21 +11,52 @@ class MinmaxPlayer:
     This class is the implementation of the minmax algorithm with alpha-beta pruning
     for improved speed and greater depth search.
     """
-
     import random
 
     def __init__(self, color):
         """Constructor."""
         self.color = color
+        self.max_depth = 4
+        self.max_pruned = 0
+        self.min_pruned = 0
+        #self.max_time = 10.0 # 10 seconds
+        #self.init = True
+
 
     def play(self, board):
+        # if self.init == True:
+        #     import time
+        #     elapsed = 0
+        #     depth = 1
+        #     #self, board, player_color, current_depth, max_depth
+        #     #testing depth
+        #     print "Calibrating depth search"
+        #     while elapsed < self.max_time:
+        #         start = time.clock()
+        #         self._test_tree_depth(board, self.color, 0, depth)
+        #         elapsed = time.clock()
+        #         elapsed = elapsed - start
+        #         #print "Time spent in depth search with depth " + str(depth) + " is: ", elapsed
+        #         depth += 1
+        #     self.max_depth = depth - 1
+        #     print max_depth
+        #     self.init = False
+
         """This is the function called by the board controller. Returns a Move."""
+        import time
         print "Minmax Player with alpha-beta pruning"
 
+        start = time.clock()
         best_move = self.minmax(board, self.color, 0)
+        elapsed = time.clock()
+        elapsed = elapsed - start
+        print "Time spent finding the best move: " + str(elapsed)
         #print "best_move (play): " + str(best_move)
-
+        print "pruned in max: " + str(self.max_pruned) + " | pruned in min: " + str(self.min_pruned)
+        self.max_pruned = 0
+        self.min_pruned = 0
         return best_move
+
 
     def board_value(self, board, player_color):
         """This function returns the value of the board passed as argument.
@@ -44,6 +75,7 @@ class MinmaxPlayer:
                 game_value = game_value + (multiplier*self.heuristic(temp_move))
         return game_value
 
+
     def max_move(self, board, player_color, depth, alpha, beta):
         """This is the max part of the alpha-beta pruning. It plays every valid
         move available for player_color (this player) until the game is over, if a move ends the game
@@ -60,7 +92,7 @@ class MinmaxPlayer:
             return multiplier * g_over * 1000000 # very large number
 
         # Reached maximum depth for recursion
-        if depth >= 4:
+        if depth >= self.max_depth:
             return self.board_value(board,player_color)
 
         best_move_value = -1000000 # very small number
@@ -71,22 +103,17 @@ class MinmaxPlayer:
             new_board = board.get_clone()
             new_board.play(m, player_color)
 
-            # treta para ver se algum primeiro movimento acaba com o jogo. se sim, joga esse movimento.
             # this checks if the current move ends the game by capturing all of the opponent's pieces.
             # if this happens, make this move.
             if depth == 0:
                 new_board_score = new_board.score()
                 if self.color == Board.WHITE:
                     if new_board_score[1] == 0:
-                        print "entrou na treta"
                         best_move = m
-                        print "best move da treta: " + str(best_move)
                         break
                 else:
                     if new_board_score[0] == 0:
-                        print "entrou na treta"
                         best_move = m
-                        print "best move da treta: " + str(best_move)
                         break
 
             # Calls the min part of the algorithm.
@@ -99,6 +126,7 @@ class MinmaxPlayer:
                     best_move = m;
 
             if value >= beta: # pruning
+                self.max_pruned += 1
                 return value
 
             if value > alpha:
@@ -120,6 +148,7 @@ class MinmaxPlayer:
         # Return value of the recursive part of this algorithm.
         return best_move_value
 
+
     def min_move(self, board, player_color, depth, alpha, beta):
         """This is the min part of the alpha-beta pruning. It plays every valid
         move available for player_color (oppenent) until the game is over, if a move ends the game
@@ -136,7 +165,7 @@ class MinmaxPlayer:
             return multiplier * g_over * 1000000 # very large number
 
         # Reached maximum depth for recursion
-        if depth > 4:
+        if depth > self.max_depth:
             return self.board_value(board,self.color)
 
         best_move_value = 1000000 # very large number
@@ -152,6 +181,7 @@ class MinmaxPlayer:
                 best_move_value = value
 
             if value <= alpha: # pruning
+                self.min_pruned += 1
                 return value
 
             if value < beta:
@@ -190,6 +220,7 @@ class MinmaxPlayer:
 
         return board_values[(8 * line) + col]
 
+
     def gameover(self,board):
         """This function returns +1 if white player wins, -1 if black player wins,
         0 if game is not over and +2 if game is a tie
@@ -202,3 +233,17 @@ class MinmaxPlayer:
             return int(2 * int(score[0] > score[1]) - 0.5) # +1 if white player wins, -1 if black player wins
 
         return 0 # game goes on!
+
+
+    # def _test_tree_depth(self, board, player_color, current_depth, max_depth):
+    #     # print str(current_depth) + " | " + str(max_depth)
+    #     if current_depth <= max_depth:
+    #         for move in board.valid_moves(self.color):
+    #             new_board = board.get_clone()
+    #             new_board.play(move, player_color)
+    #             if current_depth % 2 == 0:
+    #                 self._test_tree_depth(new_board, self.color, current_depth + 1, max_depth)
+    #             else:
+    #                 self._test_tree_depth(new_board, board._opponent(self.color), current_depth + 1, max_depth)
+    #     else:
+    #         return
