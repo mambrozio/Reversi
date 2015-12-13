@@ -9,7 +9,7 @@ class HeuristcvaluePlayer:
     def play(self, board):
         #get array of valid moves
         moves = board.valid_moves(self.color)
-
+        
         #see which move has the best value
         best_move = self.get_best_move(moves)
 
