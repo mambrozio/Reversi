@@ -17,44 +17,31 @@ class MinmaxPlayer:
         """Constructor."""
         self.color = color
         self.max_depth = 4
-        self.max_pruned = 0
-        self.min_pruned = 0
-        #self.max_time = 10.0 # 10 seconds
-        #self.init = True
+        #self.max_pruned = 0 #debug
+        #self.min_pruned = 0 #debug
 
 
     def play(self, board):
-        # if self.init == True:
-        #     import time
-        #     elapsed = 0
-        #     depth = 1
-        #     #self, board, player_color, current_depth, max_depth
-        #     #testing depth
-        #     print "Calibrating depth search"
-        #     while elapsed < self.max_time:
-        #         start = time.clock()
-        #         self._test_tree_depth(board, self.color, 0, depth)
-        #         elapsed = time.clock()
-        #         elapsed = elapsed - start
-        #         #print "Time spent in depth search with depth " + str(depth) + " is: ", elapsed
-        #         depth += 1
-        #     self.max_depth = depth - 1
-        #     print max_depth
-        #     self.init = False
-
         """This is the function called by the board controller. Returns a Move."""
-        import time
-        print "Minmax Player with alpha-beta pruning"
 
-        start = time.clock()
+        # Everything commented on this function is for debugging purposes
+        #import time
+
+        print "Minmax Player with alpha-beta pruning. Matheus Ambrozio and Matheus Galvez"
+
+        #start = time.clock()
+
         best_move = self.minmax(board, self.color, 0)
-        elapsed = time.clock()
-        elapsed = elapsed - start
-        print "Time spent finding the best move: " + str(elapsed)
+
+        #elapsed = time.clock()
+        #elapsed = elapsed - start
+
+        #print "Time spent finding the best move: " + str(elapsed)
         #print "best_move (play): " + str(best_move)
-        print "pruned in max: " + str(self.max_pruned) + " | pruned in min: " + str(self.min_pruned)
-        self.max_pruned = 0
-        self.min_pruned = 0
+        #print "pruned in max: " + str(self.max_pruned) + " | pruned in min: " + str(self.min_pruned)
+        #self.max_pruned = 0
+        #self.min_pruned = 0
+
         return best_move
 
 
@@ -126,7 +113,7 @@ class MinmaxPlayer:
                     best_move = m;
 
             if value >= beta: # pruning
-                self.max_pruned += 1
+                #self.max_pruned += 1 #debug
                 return value
 
             if value > alpha:
@@ -134,15 +121,6 @@ class MinmaxPlayer:
 
         # Base of recursion. Returns the best move (Move object)
         if depth == 0:
-
-            # treta pra nao dar erro quando rodar. Eh uma protecao para caso best_move nunca seja setado
-            # TODO tentar descobrir o motivo do erro.
-            # XXX comentar as duas tretas e rodar como branco contra o terceiros_player
-            # if there's no best move, randomly choose one of the valid moves available
-            # if best_move is None:
-            #     print "retornando random"
-            #     move_ = self.random.choice(board.valid_moves(self.color))
-            #     return move_
             return best_move # returns the best move to minmax()
 
         # Return value of the recursive part of this algorithm.
@@ -181,7 +159,7 @@ class MinmaxPlayer:
                 best_move_value = value
 
             if value <= alpha: # pruning
-                self.min_pruned += 1
+                #self.min_pruned += 1 #debug
                 return value
 
             if value < beta:
@@ -233,17 +211,3 @@ class MinmaxPlayer:
             return int(2 * int(score[0] > score[1]) - 0.5) # +1 if white player wins, -1 if black player wins
 
         return 0 # game goes on!
-
-
-    # def _test_tree_depth(self, board, player_color, current_depth, max_depth):
-    #     # print str(current_depth) + " | " + str(max_depth)
-    #     if current_depth <= max_depth:
-    #         for move in board.valid_moves(self.color):
-    #             new_board = board.get_clone()
-    #             new_board.play(move, player_color)
-    #             if current_depth % 2 == 0:
-    #                 self._test_tree_depth(new_board, self.color, current_depth + 1, max_depth)
-    #             else:
-    #                 self._test_tree_depth(new_board, board._opponent(self.color), current_depth + 1, max_depth)
-    #     else:
-    #         return
