@@ -6,6 +6,7 @@ Work assignment for Artificial Inteligence class in 2015/2. DCC/UFRJ
 ### Base of the project ###
 
 As requested, the base of the game was already done in python. We only had to write the players.
+
 * [Base project](https://github.com/victorlcampos/TabuleiroOthello)
 
 
