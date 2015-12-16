@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['gameover',['gameover',['../class_tabuleiro_othello-fork_1_1models_1_1players_1_1test2__min__max__alpha__beta__player_1_1_minmax_player.html#ab2852c0ef15764b254dd6b6e665a54ad',1,'TabuleiroOthello-fork::models::players::test2_min_max_alpha_beta_player::MinmaxPlayer']]],
-  ['greedyplayer',['GreedyPlayer',['../class_tabuleiro_othello-fork_1_1models_1_1players_1_1greedy__player_1_1_greedy_player.html',1,'TabuleiroOthello-fork::models::players::greedy_player']]]
+  ['heuristic',['heuristic',['../class_tabuleiro_othello-fork_1_1models_1_1players_1_1mixed__heuristic__player_1_1_minimax1111_player.html#a40782d1e36b5446fa304babecc312333',1,'TabuleiroOthello-fork.models.players.mixed_heuristic_player.Minimax1111Player.heuristic()'],['../class_tabuleiro_othello-fork_1_1models_1_1players_1_1table__minimax__alpha__beta__player_1_1_minimax1_player.html#a87a2a3b1ab6615235d2d8a0ada107bc9',1,'TabuleiroOthello-fork.models.players.table_minimax_alpha_beta_player.Minimax1Player.heuristic()']]],
+  ['humanplayer',['HumanPlayer',['../class_tabuleiro_othello-fork_1_1models_1_1players_1_1human__player___1_1_human_player.html',1,'TabuleiroOthello-fork::models::players::human_player_']]]
 ];

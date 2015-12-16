@@ -23,7 +23,7 @@ class BoardController:
     self.view.update_view()
 
     while finish_game != 2:
-      raw_input("")
+      #raw_input("")
       atual_color = self.atual_player.color
       print 'Jogador: ' + atual_color
       if self.board.valid_moves(atual_color).__len__() > 0:
