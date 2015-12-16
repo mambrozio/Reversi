@@ -2,6 +2,8 @@
 
 Work assignment for Artificial Inteligence class in 2015/2. DCC/UFRJ
 
+Students: Matheus Ambrozio and Matheus Galvez
+
 
 ### Base of the project ###
 
@@ -12,10 +14,10 @@ As requested, the base of the game was already done in python. We only had to wr
 
 ### Heuristics ###
 
-* Heuristic 1 - table
-* Heuristic 2 - pieces
-* Heuristic 3 - minimize
-* Heuristic 4 - mixed
+* Heuristic 1 - Board positions have different values;
+* Heuristic 2 - Number of pieces owned;
+* Heuristic 3 - Minimize opponents moves;
+* Heuristic 4 - Mixed heuristics. Uses heuristics 1 or 3, according to some condition.
 
 
 ### Players ###
