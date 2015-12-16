@@ -5,12 +5,12 @@ from models.move import Move
 Documentation for the minimax with alpha-beta pruning.
 """
 
-class Minimax1Player:
+class Minimax1111Player:
     """Documentation for the minimax with alpha-beta pruning AI player.
 
     This class is the implementation of the minimax algorithm with alpha-beta pruning
     for improved speed and greater depth search.
-    This class uses heuristic 1 (table).
+    This class uses heuristic 4 (mixed).
     """
     import random
 
@@ -18,6 +18,7 @@ class Minimax1Player:
         """Constructor."""
         self.color = color
         self.max_depth = 4
+        self.heuristic_type = 0 # use table if 0 and pieces if 1 and minimize if 2
         #self.max_pruned = 0 #debug
         #self.min_pruned = 0 #debug
 
@@ -28,9 +29,34 @@ class Minimax1Player:
         # Everything commented on this function is for debugging purposes
         #import time
 
-        print "Minimax1Player with alpha-beta pruning. Heuristic 1 (table). Matheus Ambrozio and Matheus Galvez."
+        print "Minimax1111Player with alpha-beta pruning. Heuristic 4 (mixed). Matheus Ambrozio and Matheus Galvez."
 
         #start = time.clock()
+
+        # if the board is almost complete switch strategies
+        score = board.score()
+        if self.color == Board.WHITE:
+            if score[0] > score[1]: # winning
+                self.heuristic_type = 2 # minimize
+            else: # losing
+                self.heuristic_type = 0 # table
+        else: # Board.BLACK
+            if score[0] < score[1]: # winning
+                self.heuristic_type = 2 # minimize
+            else: # losing
+                self.heuristic_type = 0 # table
+
+        # if score[0] + score[1] >= 40:
+        #     if self.color == Board.WHITE:
+        #         if score[0] > score[1]: # winning
+        #             self.heuristic_type = 2 # minimize
+        #         else: # losing
+        #             self.heuristic_type = 1 # pieces
+        #     else: # Board.BLACK
+        #         if score[0] < score[1]: # winning
+        #             self.heuristic_type = 2 # minimize
+        #         else: # losing
+        #             self.heuristic_type = 1 # pieces
 
         best_move = self.minimax(board, self.color)
 
@@ -46,7 +72,7 @@ class Minimax1Player:
         return best_move
 
 
-    def board_value(self, board, player_color):
+    def board_value_table(self, board, player_color):
         """This function returns the value of the board received as argument.
         It is the sum of all positions that player_color has minus the sum of
         positions that the opposition has. Blank positions do not count.
@@ -62,6 +88,31 @@ class Minimax1Player:
                     multiplier = -1
                 game_value = game_value + (multiplier * self.heuristic(temp_move))
         return game_value
+
+
+    def board_value_pieces(self, board, player_color):
+        """This function returns the value of the board received as argument.
+        It is the sum of all positions owned by that player_color minus the sum of
+        positions owned by the opposition. Blank positions do not count.
+        """
+        game_value = 0
+        board_score = board.score()
+        if (player_color == Board.WHITE):
+            game_value += board_score[0]
+            game_value -= board_score[1]
+        else:
+            game_value -= board_score[0]
+            game_value += board_score[1]
+        return game_value
+
+
+    def board_value_minimize(self, board, player_color):
+        """This function returns the value of the board received as argument.
+        It is the number of valid moves for the opponent.
+        """
+        if player_color == Board.WHITE:
+            return -len(board.valid_moves(Board.BLACK))
+        return -len(board.valid_moves(Board.WHITE))
 
 
     def max_move(self, board, player_color, depth, alpha, beta):
@@ -81,7 +132,12 @@ class Minimax1Player:
 
         # Reached maximum depth for recursion
         if depth >= self.max_depth:
-            return self.board_value(board,player_color)
+            if self.heuristic_type == 0:
+                return self.board_value_table(board,player_color)
+            elif self.heuristic_type == 1:
+                return self.board_value_pieces(board,player_color)
+            else:
+                return self.board_value_minimize(board,player_color)
 
         best_move_value = -1000000 # very small number
         best_move = None
@@ -147,7 +203,12 @@ class Minimax1Player:
 
         # Reached maximum depth for recursion
         if depth > self.max_depth:
-            return self.board_value(board,self.color)
+            if self.heuristic_type == 0:
+                return self.board_value_table(board,player_color)
+            elif self.heuristic_type == 1:
+                return self.board_value_pieces(board,player_color)
+            else:
+                return self.board_value_minimize(board,player_color)
 
         best_move_value = 1000000 # very large number
 

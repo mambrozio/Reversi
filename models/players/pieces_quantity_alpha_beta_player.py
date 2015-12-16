@@ -5,12 +5,12 @@ from models.move import Move
 Documentation for the minimax with alpha-beta pruning.
 """
 
-class Minimax1Player:
+class Minimax11Player:
     """Documentation for the minimax with alpha-beta pruning AI player.
 
     This class is the implementation of the minimax algorithm with alpha-beta pruning
     for improved speed and greater depth search.
-    This class uses heuristic 1 (table).
+    This class uses heuristic 2 (pieces).
     """
     import random
 
@@ -28,7 +28,7 @@ class Minimax1Player:
         # Everything commented on this function is for debugging purposes
         #import time
 
-        print "Minimax1Player with alpha-beta pruning. Heuristic 1 (table). Matheus Ambrozio and Matheus Galvez."
+        print "Minimax11Player with alpha-beta pruning. Heuristic 2 (pieces). Matheus Ambrozio and Matheus Galvez."
 
         #start = time.clock()
 
@@ -48,19 +48,17 @@ class Minimax1Player:
 
     def board_value(self, board, player_color):
         """This function returns the value of the board received as argument.
-        It is the sum of all positions that player_color has minus the sum of
-        positions that the opposition has. Blank positions do not count.
+        It is the sum of all positions owned by that player_color minus the sum of
+        positions owned by the opposition. Blank positions do not count.
         """
         game_value = 0
-        for line in range(1, 9):
-            for col in range(1, 9):
-                temp_move = Move(line, col)
-                multiplier = 0
-                if board.board[line][col] == self.color:
-                    multiplier = 1
-                if board.board[line][col] == board._opponent(self.color):
-                    multiplier = -1
-                game_value = game_value + (multiplier * self.heuristic(temp_move))
+        board_score = board.score()
+        if (player_color == Board.WHITE):
+            game_value = board_score[0]
+            game_value = game_value - board_score[1]
+        else:
+            game_value = board_score[1]
+            game_value = game_value - board_score[0]
         return game_value
 
 
@@ -173,33 +171,7 @@ class Minimax1Player:
 
     def minimax(self, board, player_color):
         """Wrapper function to call max and get the best move."""
-        return self.max_move(board, self.color, 0, -10000000, 10000000)
-
-
-    def heuristic(self, move):
-        """This function returns the value of the move, according to the heuristic table below:
-        100,   0,   6,   5,   5,   6,   0, 100
-          0,   0,   8,   3,   3,   8,   0,   0
-          3,   7,   3,   2,   2,   3,   7,   3
-          4,   3,   2,   1,   1,   2,   3,   4
-          4,   3,   2,   1,   1,   2,   3,   4
-          3,   7,   3,   2,   2,   3,   7,   3
-          0,   0,   8,   3,   3,   8,   0,   0
-        100,   0,   6,   5,   5,   6,   0, 100
-        """
-        board_values = [100,   0,   6,   5,   5,   6,   0, 100,
-                          0,   0,   8,   3,   3,   8,   0,   0,
-                          3,   7,   3,   2,   2,   3,   7,   3,
-                          4,   3,   2,   1,   1,   2,   3,   4,
-                          4,   3,   2,   1,   1,   2,   3,   4,
-                          3,   7,   3,   2,   2,   3,   7,   3,
-                          0,   0,   8,   3,   3,   8,   0,   0,
-                        100,   0,   6,   5,   5,   6,   0, 100]
-
-        line = move.x - 1
-        col = move.y - 1
-
-        return board_values[(8 * line) + col]
+        return self.max_move(board, self.color, 0, -100000000, 100000000)
 
 
     def gameover(self,board):
