@@ -9,7 +9,7 @@ class Minimax11Player:
     """Documentation for the minimax with alpha-beta pruning AI player.
 
     This class is the implementation of the minimax algorithm with alpha-beta pruning
-    for improved speed and greater depth search.
+    for improved speed and greater depth during the search.
     This class uses heuristic 2 (pieces).
     """
     import random
@@ -63,9 +63,9 @@ class Minimax11Player:
 
 
     def max_move(self, board, player_color, depth, alpha, beta):
-        """This is the max part of the alpha-beta pruning. It plays every valid
+        """This is the max part of the minimax algorithm. It plays every valid
         move available for player_color (this player) until the game is over, if a move ends the game
-        or the depth is reached. It calls the min part of the alpha-beta algorithm.
+        or the depth is reached. It calls the min part of the minimax algorithm.
         During the recursive part, the return value (integer) of this function is the current best value.
         If depth is 0, meaning the end of the recursive part, it returns the best move (Move object)
         """
@@ -79,7 +79,7 @@ class Minimax11Player:
 
         # Reached maximum depth for recursion
         if depth >= self.max_depth:
-            return self.board_value(board,player_color)
+            return self.board_value(board, player_color)
 
         best_move_value = -1000000 # very small number
         best_move = None
@@ -89,8 +89,8 @@ class Minimax11Player:
             new_board = board.get_clone()
             new_board.play(m, player_color)
 
-            # this checks if the current move ends the game by capturing all of the opponent's pieces.
-            # if this happens, make this move.
+            # This checks if the current move ends the game by capturing all of the opponent's pieces.
+            # If this happens, make this move.
             if depth == 0:
                 new_board_score = new_board.score()
                 if self.color == Board.WHITE:
@@ -108,7 +108,7 @@ class Minimax11Player:
             # This updates the alpha value and the best move if the depth is 0
             if value > best_move_value:
                 best_move_value = value
-                if (depth == 0):
+                if depth == 0:
                     best_move = m;
             if (depth == 0) and (value == best_move_value) and (not best_move):
                 best_move = m
@@ -129,11 +129,11 @@ class Minimax11Player:
 
 
     def min_move(self, board, player_color, depth, alpha, beta):
-        """This is the min part of the alpha-beta pruning. It plays every valid
+        """This is the min part of the minimax algorithm. It plays every valid
         move available for player_color (oppenent) until the game is over, if a move ends the game
-        or the depth is reached. It calls the max part of the alpha-beta algorithm.
+        or the depth is reached. It calls the max part of the minimax algorithm.
         Return value (integer) of this function is the current best value (beta).
-        Very similar with the max function.
+        Very similar to the max function.
         """
         # Checking if game is over and returning -1000000 for a loss, 1000000 for a win and 0 for a tie.
         g_over = self.gameover(board)
@@ -145,7 +145,7 @@ class Minimax11Player:
 
         # Reached maximum depth for recursion
         if depth > self.max_depth:
-            return self.board_value(board,self.color)
+            return self.board_value(board, self.color)
 
         best_move_value = 1000000 # very large number
 
@@ -154,7 +154,7 @@ class Minimax11Player:
             new_board = board.get_clone()
             new_board.play(m, player_color)
 
-            value = self.max_move(new_board, self.color, depth + 1,alpha,beta)
+            value = self.max_move(new_board, self.color, depth + 1, alpha, beta)
 
             if value < best_move_value:
                 best_move_value = value
@@ -181,7 +181,7 @@ class Minimax11Player:
         # No more valid moves
         score = board.score()
         if (not board.valid_moves(self.color)) and (not board.valid_moves(board._opponent(self.color))):
-            if score[0]==score[1]:
+            if score[0] == score[1]:
                 return 2 # tie
             return int(2 * int(score[0] > score[1]) - 0.5) # +1 if white player wins, -1 if black player wins
 

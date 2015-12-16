@@ -125,7 +125,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><pre class="fragment">Documentation for the minimax with alpha-beta pruning AI player.
 
 This class is the implementation of the minimax algorithm with alpha-beta pruning
-for improved speed and greater depth search.
+for improved speed and greater depth during the search.
 This class uses heuristic 3 (minimize).
 </pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a9193644766b51f8729d2ecf3b1804210"></a>
@@ -185,7 +185,7 @@ This class uses heuristic 3 (minimize).
       </table>
 </div><div class="memdoc">
 <pre class="fragment">This function returns the value of the board received as argument.
-It is the number of valid moves for the opponent.
+It is the number of valid moves for the opponent multiplied by -1.
 </pre> 
 </div>
 </div>
@@ -264,9 +264,9 @@ It is the number of valid moves for the opponent.
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">This is the max part of the alpha-beta pruning. It plays every valid
+<pre class="fragment">This is the max part of the minimax algorithm. It plays every valid
 move available for player_color (this player) until the game is over, if a move ends the game
-or the depth is reached. It calls the min part of the alpha-beta algorithm.
+or the depth is reached. It calls the min part of the minimax algorithm.
 During the recursive part, the return value (integer) of this function is the current best value.
 If depth is 0, meaning the end of the recursive part, it returns the best move (Move object)
 </pre> 
@@ -319,11 +319,11 @@ If depth is 0, meaning the end of the recursive part, it returns the best move (
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">This is the min part of the alpha-beta pruning. It plays every valid
+<pre class="fragment">This is the min part of the minimax algorithm. It plays every valid
 move available for player_color (oppenent) until the game is over, if a move ends the game
-or the depth is reached. It calls the max part of the alpha-beta algorithm.
+or the depth is reached. It calls the max part of the minimax algorithm.
 Return value (integer) of this function is the current best value (beta).
-Very similar with the max function.
+Very similar to the max function.
 </pre> 
 </div>
 </div>
@@ -386,7 +386,7 @@ Very similar with the max function.
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>minimize_moves_player.py</li>
+<li>/home/ambrozio/Development/Atom/IA/Othello/models/players/minimize_moves_player.py</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
