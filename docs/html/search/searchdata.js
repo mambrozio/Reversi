@@ -1,7 +1,7 @@
 var indexSectionsWithContent =
 {
-  0: "_bghmpr",
-  1: "hmr",
+  0: "_bcghmpr",
+  1: "cmr",
   2: "_bghmp"
 };
 

@@ -2,7 +2,7 @@ from models.board import Board
 from models.move import Move
 
 """@package players
-Documentation for the minimax with alpha-beta pruning.
+Documentation for the minimax with alpha-beta pruning. Heuristic 1.
 """
 
 class Minimax1Player:
