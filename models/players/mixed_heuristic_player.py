@@ -17,7 +17,7 @@ class Minimax1111Player:
     def __init__(self, color):
         """Constructor."""
         self.color = color
-        self.max_depth = 4
+        self.max_depth = 5
         self.heuristic_type = 0 # use table if 0 and pieces if 1 and minimize if 2
         #self.max_pruned = 0 #debug
         #self.min_pruned = 0 #debug
@@ -110,6 +110,14 @@ class Minimax1111Player:
                 return 0
             multiplier = 2 * (int(player_color > '@') - 0.5) # this makes multiplier -1 for a loss and +1 for a win
             return multiplier * g_over * 1000000 # very large number
+
+        # Change max depth of search tree if number of moves of the root is greater than 5.
+        if (depth == 0) and (len(board.valid_moves(player_color)) > 5):
+            print "max depth: 4 | depth = " + str(depth) + " | " + str(len(board.valid_moves(player_color)))
+            self.max_depth = 4
+        elif (depth == 0):
+            print "max depth: 5"
+            self.max_depth = 5
 
         # Reached maximum depth for recursion
         if depth >= self.max_depth:
