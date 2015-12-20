@@ -113,10 +113,8 @@ class Minimax1111Player:
 
         # Change max depth of search tree if number of moves of the root is greater than 5.
         if (depth == 0) and (len(board.valid_moves(player_color)) > 5):
-            print "max depth: 4 | depth = " + str(depth) + " | " + str(len(board.valid_moves(player_color)))
             self.max_depth = 4
         elif (depth == 0):
-            print "max depth: 5"
             self.max_depth = 5
 
         # Reached maximum depth for recursion
