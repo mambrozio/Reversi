@@ -35,28 +35,8 @@ class Minimax1111Player:
 
         # if the board is almost complete switch strategies
         score = board.score()
-        if self.color == Board.WHITE:
-            if score[0] > score[1]: # winning
-                self.heuristic_type = 2 # minimize
-            else: # losing
-                self.heuristic_type = 0 # table
-        else: # Board.BLACK
-            if score[0] < score[1]: # winning
-                self.heuristic_type = 2 # minimize
-            else: # losing
-                self.heuristic_type = 0 # table
-
-        # if score[0] + score[1] >= 40:
-        #     if self.color == Board.WHITE:
-        #         if score[0] > score[1]: # winning
-        #             self.heuristic_type = 2 # minimize
-        #         else: # losing
-        #             self.heuristic_type = 1 # pieces
-        #     else: # Board.BLACK
-        #         if score[0] < score[1]: # winning
-        #             self.heuristic_type = 2 # minimize
-        #         else: # losing
-        #             self.heuristic_type = 1 # pieces
+        if score[0] + score[1] >= 54:
+            self.heuristic_type = 2
 
         best_move = self.minimax(board, self.color)
 
